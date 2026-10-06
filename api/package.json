@@ -1,0 +1,19 @@
+{
+  "name": "siga-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "@tensorflow/tfjs": "^4.22.0",
+    "@tensorflow/tfjs-backend-cpu": "^4.22.0",
+    "express": "^5.1.0",
+    "jose": "^6.1.0",
+    "multer": "^2.4.0",
+    "nsfwjs": "^4.3.0",
+    "pg": "^8.16.3",
+    "sharp": "^0.35.5"
+  }
+}

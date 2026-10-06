@@ -1,0 +1,58 @@
+services:
+  siga:
+    build:
+      context: .
+      args:
+        VITE_FIREBASE_API_KEY: ${VITE_FIREBASE_API_KEY:-}
+        VITE_FIREBASE_AUTH_DOMAIN: ${VITE_FIREBASE_AUTH_DOMAIN:-siga-be825.firebaseapp.com}
+        VITE_FIREBASE_PROJECT_ID: ${VITE_FIREBASE_PROJECT_ID:-siga-be825}
+        VITE_FIREBASE_APP_ID: ${VITE_FIREBASE_APP_ID:-}
+    container_name: siga-acessibilidade
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    depends_on:
+      api:
+        condition: service_healthy
+
+  api:
+    build: ./api
+    container_name: siga-api
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgres://siga:${POSTGRES_PASSWORD:-siga_local_dev_change_me}@db:5432/siga
+      FIREBASE_PROJECT_ID: siga-be825
+      UPLOADS_DIR: /app/uploads
+    volumes:
+      - siga-photo-data:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  db:
+    image: postgres:17-alpine
+    container_name: siga-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: siga
+      POSTGRES_USER: siga
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-siga_local_dev_change_me}
+    volumes:
+      - siga-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U siga -d siga"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  siga-postgres-data:
+  siga-photo-data:

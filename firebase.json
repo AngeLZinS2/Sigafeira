@@ -1,0 +1,15 @@
+{
+  "auth": {
+    "providers": {
+      "emailPassword": true,
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "SIGA · Acessibilidade Urbana",
+        "supportEmail": "angelo.neri2020@gmail.com",
+        "authorizedRedirectUris": [
+          "https://siga-be825.firebaseapp.com/__/auth/handler",
+          "http://localhost"
+        ]
+      }
+    }
+  }
+}
