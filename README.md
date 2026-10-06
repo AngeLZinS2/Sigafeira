@@ -111,6 +111,15 @@ docker compose up -d --build
 
 O site fica disponível na porta `8081`. Em produção, configure HTTPS em um proxy reverso e autorize o domínio no Firebase Authentication.
 
+### Domínio oficial
+
+O domínio configurado para a publicação é `sigafeira.online`, com `www.sigafeira.online` como endereço alternativo. Os modelos do proxy reverso ficam em `deploy/nginx`:
+
+- `sigafeira.online.bootstrap.conf`: HTTP e desafio ACME antes da emissão do certificado;
+- `sigafeira.online.conf`: redirecionamento para HTTPS e proxy definitivo.
+
+Os dois nomes precisam apontar para o IP público da VPS. Depois da propagação do DNS, emita o certificado Let's Encrypt e adicione `sigafeira.online` aos domínios autorizados do Firebase Authentication.
+
 ## Dados e privacidade
 
 As ocorrências publicadas ficam visíveis no mapa. Fotos aceitas são convertidas para WebP e armazenadas no volume da aplicação. O classificador de imagens funciona na própria API, sem contratar um serviço externo de moderação. Como classificadores automáticos podem errar, a moderação humana continua recomendada em uma implantação pública.
