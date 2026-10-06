@@ -11,7 +11,7 @@ import { useDialogA11y } from './useDialogA11y.js';
 import { MapContainer, Marker, Popup, TileLayer, ZoomControl, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import '../styles.css';
+import './styles.css';
 
 const CITY_CENTER = [-12.2577, -38.9598];
 const MAX_PHOTO_BYTES = 8 * 1024 * 1024;
@@ -35,7 +35,6 @@ const learningResources = [
   { title: 'Direitos e acessibilidade', category: 'Direitos', description: 'Material informativo sobre direitos e acessibilidade.', file: '08-direitos-e-acessibilidade.pdf' },
   { title: 'Acessibilidade em Feira de Santana', category: 'Nossa cidade', description: 'Conteúdo sobre acessibilidade com foco em Feira de Santana.', file: '09-acessibilidade-em-feira-de-santana.pdf' },
   { title: 'Manual de conscientização', category: 'Conscientização', description: 'Material para apoiar conversas sobre acessibilidade e inclusão.', file: '10-manual-de-conscientizacao.pdf' },
-  { title: 'Resumo expandido · 2026', category: 'Pesquisa', description: 'Documento em formato de resumo expandido, publicado em 2026.', file: 'resumo-expandido-2026.pdf' },
 ];
 const navigationItems = [
   { id: 'inicio', label: 'Início' },

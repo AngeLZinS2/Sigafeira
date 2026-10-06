@@ -126,7 +126,23 @@ As ocorrências publicadas ficam visíveis no mapa. Fotos aceitas são convertid
 
 ## Materiais educativos
 
-As cartilhas e o resumo expandido ficam em `public/materiais` e podem ser acessados diretamente pela seção **Materiais educativos** do site.
+As dez cartilhas públicas ficam em `public/materiais` e podem ser acessadas diretamente pela seção **Materiais educativos** do site. O resumo expandido foi retirado da biblioteca pública e preservado somente como documentação do projeto em `docs/pesquisa`.
+
+## Organização do projeto
+
+```text
+Siga/
+├── api/                  # API Node.js e processamento de fotos
+├── deploy/nginx/         # Configurações do domínio e HTTPS
+├── docs/pesquisa/        # Documentação acadêmica não publicada no site
+├── public/
+│   ├── assets/           # Logotipo, ícones e imagens públicas
+│   └── materiais/        # Dez cartilhas oferecidas no site
+├── src/                  # Componentes React, integrações e estilos
+├── docker-compose.yml    # Site, API e PostgreSQL
+├── Dockerfile            # Build do front-end e Nginx da aplicação
+└── README.md
+```
 
 ## Autor
 

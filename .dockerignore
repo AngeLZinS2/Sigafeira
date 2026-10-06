@@ -5,4 +5,5 @@ dist
 .env.*
 !.env.example
 secrets
+docs
 api/node_modules
