@@ -1,56 +1,71 @@
 # SIGA Feira
 
-Sistema Inteligente de Gestão da Acessibilidade para mapear barreiras urbanas em Feira de Santana, Bahia.
+SIGA is an accessibility management platform designed to map urban barriers in Feira de Santana, Brazil.
 
-O SIGA permite que moradores consultem ocorrências em um mapa colaborativo e registrem problemas como calçadas danificadas, falta de rampas, obstáculos na via e semáforos sem recursos acessíveis. O projeto foi desenvolvido como uma proposta escolar de participação cidadã, transparência e apoio ao planejamento urbano.
+Residents can explore accessibility reports on a collaborative map and report issues such as damaged sidewalks, missing curb ramps, street obstacles, and traffic lights without accessible features. The project was created as an academic civic technology initiative focused on community participation, transparency, and data-informed urban planning.
 
-## Funcionalidades
+**Live application:** [sigafeira.online](https://sigafeira.online)
 
-- mapa interativo de Feira de Santana com dados do OpenStreetMap;
-- consulta pública de ocorrências e detalhes de cada relato;
-- cadastro e acesso com e-mail e senha ou conta Google;
-- registro de barreiras com localização, descrição e foto;
-- localização pelo dispositivo ou seleção direta no mapa;
-- armazenamento persistente dos relatos em PostgreSQL;
-- processamento das fotos em WebP;
-- verificação local de imagens com NSFWJS;
-- remoção de uma ocorrência somente pelo seu autor;
-- materiais educativos sobre acessibilidade urbana;
-- interface responsiva e preparada para navegação por teclado.
+## Key Features
 
-## Arquitetura
+- Interactive map of Feira de Santana powered by OpenStreetMap
+- Public access to reports and occurrence details
+- Email/password and Google authentication
+- Accessibility reports with location, description, and photo
+- Device geolocation and direct point selection on the map
+- Persistent report storage in PostgreSQL
+- Automatic image conversion to WebP
+- Local image moderation with NSFWJS
+- Ownership controls that allow only the author to delete a report
+- Educational resources about urban accessibility
+- Responsive interface with keyboard navigation support
 
-| Componente | Tecnologia | Responsabilidade |
+## Architecture
+
+| Component | Technology | Responsibility |
 | --- | --- | --- |
-| Interface | React, Vite e Leaflet | Exibe o site, o mapa e os formulários |
-| Autenticação | Firebase Authentication | Identifica os usuários |
-| API | Node.js e Express | Valida acessos e processa ocorrências |
-| Banco de dados | PostgreSQL | Armazena os relatos |
-| Fotos | Sharp, NSFWJS e volume Docker | Normaliza, verifica e preserva imagens |
-| Publicação | Docker Compose e Nginx | Executa os serviços na VPS |
+| Web application | React, Vite, and Leaflet | Renders the interface, map, and forms |
+| Authentication | Firebase Authentication | Identifies and authenticates users |
+| API | Node.js and Express | Validates access and processes reports |
+| Database | PostgreSQL | Stores accessibility reports |
+| Image pipeline | Sharp, NSFWJS, and Docker volumes | Converts, moderates, and stores images |
+| Infrastructure | Docker Compose and Nginx | Runs and exposes the services on the VPS |
 
-O navegador nunca acessa o PostgreSQL diretamente. A API valida o token do Firebase antes de criar ou remover relatos. A consulta do mapa é pública.
+The browser never connects directly to PostgreSQL. The API validates Firebase tokens before creating or deleting reports, while map data and published reports remain publicly accessible.
 
-## Requisitos
+## Technology Stack
 
-- Docker com o plugin Docker Compose; ou
-- Node.js 22 ou superior para desenvolvimento do front-end.
+- React 19
+- Vite
+- Leaflet and React Leaflet
+- Firebase Authentication
+- Node.js and Express
+- PostgreSQL
+- Sharp and NSFWJS
+- Docker Compose
+- Nginx
+- Let's Encrypt
 
-## Configuração
+## Requirements
 
-Crie o arquivo `.env` a partir do modelo:
+- Docker with the Docker Compose plugin; or
+- Node.js 22 or later for front-end development.
+
+## Environment Configuration
+
+Create an environment file from the included template:
 
 ```sh
 cp .env.example .env
 ```
 
-No Windows PowerShell:
+On Windows PowerShell:
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-Preencha as variáveis do aplicativo Web no projeto Firebase e defina uma senha forte para o PostgreSQL:
+Add the Firebase Web App credentials and choose a strong PostgreSQL password:
 
 ```dotenv
 VITE_FIREBASE_API_KEY=
@@ -58,41 +73,41 @@ VITE_FIREBASE_AUTH_DOMAIN=siga-be825.firebaseapp.com
 VITE_FIREBASE_PROJECT_ID=siga-be825
 VITE_FIREBASE_APP_ID=
 VITE_API_BASE_URL=/api
-POSTGRES_PASSWORD=troque-esta-senha
+POSTGRES_PASSWORD=replace-with-a-strong-password
 ```
 
-O arquivo `.env` contém dados de configuração do ambiente e não é enviado ao GitHub.
+The `.env` file is excluded from Git and must never be committed.
 
-No Firebase Authentication, habilite os provedores **E-mail/senha** e **Google**. Adicione também o domínio público da aplicação em **Authorized domains**.
+Enable the **Email/Password** and **Google** providers in Firebase Authentication. Add the public application domain to the Firebase **Authorized domains** list.
 
-## Executar com Docker
+## Run with Docker
 
-Na raiz do projeto:
+From the project root:
 
 ```sh
 docker compose up -d --build
 ```
 
-Acesse `http://localhost:8081`. O Compose inicia o site, a API e o PostgreSQL. A porta do banco não é publicada no host.
+Open `http://localhost:8081`. Docker Compose starts the web application, API, and PostgreSQL database. The database port is not exposed to the host.
 
-Para parar os contêineres sem apagar os dados:
+Stop the containers without deleting persistent data:
 
 ```sh
 docker compose down
 ```
 
-Os relatos e as fotos permanecem nos volumes `siga-postgres-data` e `siga-photo-data`.
+Reports and photos remain stored in the `siga-postgres-data` and `siga-photo-data` volumes.
 
-## Desenvolvimento local
+## Local Development
 
 ```sh
 npm install
 npm run dev
 ```
 
-O Vite abre a interface em `http://localhost:5173` e encaminha as chamadas de `/api` para a API local.
+Vite serves the application at `http://localhost:5173` and forwards `/api` requests to the local API service.
 
-Comandos disponíveis:
+Available commands:
 
 ```sh
 npm run dev
@@ -101,51 +116,53 @@ npm run lint
 npm run preview
 ```
 
-## Publicação na VPS
+## VPS Deployment
 
-Copie os arquivos do projeto para o servidor, preserve o `.env` de produção e execute:
+Copy the repository files to the server, preserve the production `.env` file, and run:
 
 ```sh
 docker compose up -d --build
 ```
 
-O site fica disponível na porta `8081`. Em produção, configure HTTPS em um proxy reverso e autorize o domínio no Firebase Authentication.
+The application listens on port `8081`. In production, Nginx acts as the reverse proxy and handles HTTPS traffic.
 
-### Domínio oficial
+### Production Domain
 
-O domínio configurado para a publicação é `sigafeira.online`, com `www.sigafeira.online` como endereço alternativo. Os modelos do proxy reverso ficam em `deploy/nginx`:
+The production domain is `sigafeira.online`, with `www.sigafeira.online` as an additional hostname. Reverse proxy templates are stored in `deploy/nginx`:
 
-- `sigafeira.online.bootstrap.conf`: HTTP e desafio ACME antes da emissão do certificado;
-- `sigafeira.online.conf`: redirecionamento para HTTPS e proxy definitivo.
+- `sigafeira.online.bootstrap.conf` handles HTTP and the ACME challenge before certificate issuance.
+- `sigafeira.online.conf` redirects HTTP to HTTPS and defines the final secure proxy.
 
-Os dois nomes precisam apontar para o IP público da VPS. Depois da propagação do DNS, emita o certificado Let's Encrypt e adicione `sigafeira.online` aos domínios autorizados do Firebase Authentication.
+Both hostnames must point to the VPS public IP. The current deployment uses a Let's Encrypt certificate with automatic renewal.
 
-## Dados e privacidade
+## Data and Privacy
 
-As ocorrências publicadas ficam visíveis no mapa. Fotos aceitas são convertidas para WebP e armazenadas no volume da aplicação. O classificador de imagens funciona na própria API, sem contratar um serviço externo de moderação. Como classificadores automáticos podem errar, a moderação humana continua recomendada em uma implantação pública.
+Published reports are visible on the public map. Accepted photos are converted to WebP and stored in a dedicated application volume. Image classification runs inside the API without sending uploads to a paid moderation service.
 
-## Materiais educativos
+Automated classifiers can make mistakes, so human moderation is still recommended for a public production deployment. User email addresses are not displayed with public reports.
 
-As dez cartilhas públicas ficam em `public/materiais` e podem ser acessadas diretamente pela seção **Materiais educativos** do site. O resumo expandido foi retirado da biblioteca pública e preservado somente como documentação do projeto em `docs/pesquisa`.
+## Educational Resources
 
-## Organização do projeto
+The ten public accessibility guides are stored in `public/materiais` and are available from the application's educational resources section. The extended academic abstract is kept separately in `docs/pesquisa` and is not published by the website.
+
+## Project Structure
 
 ```text
 Siga/
-├── api/                  # API Node.js e processamento de fotos
-├── deploy/nginx/         # Configurações do domínio e HTTPS
-├── docs/pesquisa/        # Documentação acadêmica não publicada no site
+├── api/                  # Node.js API and image processing
+├── deploy/nginx/         # Domain and HTTPS proxy configuration
+├── docs/pesquisa/        # Academic documentation not served publicly
 ├── public/
-│   ├── assets/           # Logotipo, ícones e imagens públicas
-│   └── materiais/        # Dez cartilhas oferecidas no site
-├── src/                  # Componentes React, integrações e estilos
-├── docker-compose.yml    # Site, API e PostgreSQL
-├── Dockerfile            # Build do front-end e Nginx da aplicação
+│   ├── assets/           # Public logos, icons, and images
+│   └── materiais/        # Ten accessibility guides available on the site
+├── src/                  # React components, integrations, and styles
+├── docker-compose.yml    # Web application, API, and PostgreSQL services
+├── Dockerfile            # Front-end build and application Nginx image
 └── README.md
 ```
 
-## Autor
+## Author
 
-Criado por **Angelo** — [@AngeLZinS2](https://github.com/AngeLZinS2).
+Created by **Angelo** — [@AngeLZinS2](https://github.com/AngeLZinS2).
 
-Projeto escolar desenvolvido em Feira de Santana, Bahia.
+Academic project developed in Feira de Santana, Bahia, Brazil.
