@@ -5,3 +5,4 @@ dist/
 !.env.example
 api/node_modules/
 api/uploads/
+firebase-debug.log*
