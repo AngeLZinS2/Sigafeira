@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, LazyMotion, domAnimation, MotionConfig, useScroll, useSpring } from 'motion/react';
 import * as m from 'motion/react-m';
 import HomePage from './HomePage.jsx';
@@ -8,6 +8,7 @@ import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { createReport as createApiReport, deleteReport as deleteApiReport, fetchReports } from './api.js';
 import { motionTokens, revealUp } from './motion.js';
 import { useDialogA11y } from './useDialogA11y.js';
+import FontSizeControl from './FontSizeControl.jsx';
 import { MapContainer, Marker, Popup, TileLayer, ZoomControl, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -307,6 +308,14 @@ function App() {
             {navigationItems.map((item) => <a key={item.id} className={activeSection === item.id ? 'nav-active' : ''} href={`#${item.id}`} onClick={() => setActiveSection(item.id)}>{item.label}</a>)}
           </nav>
           <div className="top-actions">
+            <FontSizeControl onSizeChange={(size) => {
+              const msg = size === 'padrao'
+                ? 'Tamanho da fonte redefinido para Padrão.'
+                : size === 'medio'
+                  ? 'Tamanho da fonte aumentado para Médio.'
+                  : 'Tamanho da fonte aumentado para Grande.';
+              setToast(msg);
+            }} />
             <span className="service-status"><i /> {reportsLoading ? 'Conectando…' : reportsAvailable ? 'Ocorrências públicas' : 'API indisponível'}</span>
             {user
               ? <div className="user-menu"><span className="user-greeting">{user.displayName || user.email}</span><button className="button button-outline button-small" onClick={() => signOut(auth)}>Sair</button></div>

@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -14,6 +14,16 @@
   <link rel="icon" type="image/png" sizes="192x192" href="/assets/siga-icon-192.png" />
   <link rel="icon" type="image/jpeg" href="/assets/siga-pin.jpeg" />
   <title>SIGA | Acessibilidade Urbana</title>
+  <script>
+    (function () {
+      try {
+        var s = localStorage.getItem('siga_font_size');
+        if (s === 'medio' || s === 'grande') {
+          document.documentElement.setAttribute('data-font-size', s);
+        }
+      } catch (_) {}
+    })();
+  </script>
 </head>
 <body>
   <div id="root"></div>
