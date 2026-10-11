@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 const FONT_SIZE_STORAGE_KEY = 'siga_font_size';
 
 export const FONT_SIZES = [
-  { id: 'padrao', label: 'Padrão', shortLabel: 'Padrão', title: 'Tamanho padrão de fonte (100%)' },
-  { id: 'medio', label: 'Médio', shortLabel: 'Médio', title: 'Tamanho médio de fonte (+18%)' },
-  { id: 'grande', label: 'Grande', shortLabel: 'Grande', title: 'Tamanho grande de fonte (+35%)' },
+  { id: 'padrao', label: 'Padrão', shortLabel: 'P', title: 'Tamanho padrão de fonte (100%)' },
+  { id: 'medio', label: 'Médio', shortLabel: 'M', title: 'Tamanho médio de fonte (+18%)' },
+  { id: 'grande', label: 'Grande', shortLabel: 'G', title: 'Tamanho grande de fonte (+50%)' },
 ];
 
 export function applyFontSize(size) {
